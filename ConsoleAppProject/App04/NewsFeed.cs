@@ -1,78 +1,116 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-
 
 namespace ConsoleAppProject.App04
 {
-    ///<summary>
-    /// The NewsFeed class stores news posts for the news feed in a social network 
-    /// application.
-    /// 
-    /// Display of the posts is currently simulated by printing the details to the
-    /// terminal. (Later, this should display in a browser.)
-    /// 
-    /// This version does not save the data to disk, and it does not provide any
-    /// search or ordering functions.
-    ///</summary>
-    ///<author>
-    ///  Michael Kölling and David J. Barnes
-    ///  version 0.1
-    ///</author> 
-    public class NewsFeed
-    {
-        private readonly List<MessagePost> messages;
-        private readonly List<PhotoPost> photos;
+	public class post
+	{
 
-        ///<summary>
-        /// Construct an empty news feed.
-        ///</summary>
-        public NewsFeed()
-        {
-            messages = new List<MessagePost>();
-            photos = new List<PhotoPost>();
+        public int likes;
+
+        private readonly List<String> comments;
+
+
+        // username of the post's author
+        public String Username { get; }
+
+        public DateTime Timestamp { get; }
+
+        public post(string author) {
+
+            this.Username=author;
+            Timestamp = DateTime.Now;
+            likes = 0;
+            comments = new List<String>();
         }
-
-
-        ///<summary>
-        /// Add a text post to the news feed.
-        /// 
-        /// @param text  The text post to be added.
-        ///</summary>
-        public void AddMessagePost(MessagePost message)
+        /// <summary>
+        /// Record one more 'Like' indication from a user.
+        /// </summary>
+        public void Like()
         {
-            messages.Add(message);
+            likes++;
         }
 
         ///<summary>
-        /// Add a photo post to the news feed.
-        /// 
-        /// @param photo  The photo post to be added.
+        /// Record that a user has withdrawn his/her 'Like' vote.
         ///</summary>
-        public void AddPhotoPost(PhotoPost photo)
+        public void Unlike()
         {
-            photos.Add(photo);
-        }
-
-        ///<summary>
-        /// Show the news feed. Currently: print the news feed details to the
-        /// terminal. (To do: replace this later with display in web browser.)
-        ///</summary>
-        public void Display()
-        {
-            // display all text posts
-            foreach (MessagePost message in messages)
+            if (likes > 0)
             {
-                message.Display();
-                Console.WriteLine();   // empty line between posts
-            }
-
-            // display all photos
-            foreach (PhotoPost photo in photos)
-            {
-                photo.Display();
-                Console.WriteLine();   // empty line between posts
+                likes--;
             }
         }
+
+        ///<summary>
+        /// Add a comment to this post.
+        /// </summary>
+       
+        /// The new comment to add.
+        /// </param>        
+        public void AddComment(String text)
+        {
+            comments.Add(text);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual void Display()
+        {
+            Console.WriteLine();
+            Console.WriteLine($"    Author: {Username}");
+          
+            Console.WriteLine($"    Time Elpased: {FormatElapsedTime(Timestamp)}");
+            Console.WriteLine();
+
+            if (likes > 0)
+            {
+                Console.WriteLine($"    Likes:  {likes}  people like this.");
+            }
+            else
+            {
+                Console.WriteLine();
+            }
+
+            if (comments.Count == 0)
+            {
+                Console.WriteLine("    No comments.");
+            }
+            else
+            {
+                Console.WriteLine($"    {comments.Count}  comment(s). Click here to view.");
+            }
+        }
+        ///<summary>
+        /// Create a string describing a time point in the past in terms 
+        /// relative to current time, such as "30 seconds ago" or "7 minutes ago".
+        /// Currently, only seconds and minutes are used for the string.
+        /// </summary>
+        /// <param name="time">
+        ///  The time value to convert (in system milliseconds)
+        /// </param> 
+        /// <returns>
+        /// A relative time string for the given time
+        /// </returns>      
+        private String FormatElapsedTime(DateTime time)
+        {
+            DateTime current = DateTime.Now;
+            TimeSpan timePast = current - time;
+
+            long seconds = (long)timePast.TotalSeconds;
+            long minutes = seconds / 60;
+
+            if (minutes > 0)
+            {
+                return minutes + " minutes ago";
+            }
+            else
+            {
+                return seconds + " seconds ago";
+            }
+        }
+
+
     }
-
 }
