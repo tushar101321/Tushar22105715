@@ -1,5 +1,7 @@
-﻿using ConsoleAppProject.App01;
+using ConsoleAppProject.App01;
+using ConsoleAppProject.App02;
 using ConsoleAppProject.App03;
+using ConsoleAppProject.App04;
 using ConsoleAppProject.Helpers;
 using System;
 
@@ -17,7 +19,7 @@ namespace ConsoleAppProject
     {
         public static void Main(string[] args)
         {
-            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.ForegroundColor = ConsoleColor.DarkRed;
 
             Console.WriteLine();
             Console.WriteLine(" =================================================");
@@ -25,8 +27,41 @@ namespace ConsoleAppProject
             Console.WriteLine(" =================================================");
             Console.WriteLine();
 
-            DistanceConverter converter = new DistanceConverter();
-            //converter.run();
+
+            Console.WriteLine(" Select any of the number : ");
+            Console.WriteLine("1. APP 01");
+            Console.WriteLine("2. APP 02");
+            Console.WriteLine("3. APP 03");
+            Console.WriteLine("4. APP 04");
+
+            Console.WriteLine();
+            Console.WriteLine("Please Enter any number of App you want to open ");
+            string choice = Console.ReadLine();
+
+
+            if (choice == "1") {
+                Console.ForegroundColor = ConsoleColor.Green;
+                DistanceConverter converter = new DistanceConverter();
+                converter.Run();
+                
+            }
+            if (choice == "2")
+            {
+
+                BMI bmi = new BMI();
+                bmi.Run1();
+            }
+            if (choice == "3")
+            {
+                StudentGrades studentgrades = new StudentGrades();
+                studentgrades.Run3();
+
+            }
+            if (choice == "4")
+            {
+                Network network = new Network();
+                network.DispalyMenu();
+            }
         }
     }
 }
